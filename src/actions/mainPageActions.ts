@@ -1,4 +1,4 @@
-import { GET_PAGE_TASKS, GET_TASKS_COUNT } from "./types";
+import { GET_PAGE_TASKS, GET_TASKS_COUNT, SET_PAGE } from "./types";
 import axios from "axios";
 import { URL, DEV } from "../api/uxcandy";
 
@@ -17,5 +17,12 @@ export const getPageTasks = (page: number) => async (dispatch: any) => {
   dispatch({
     type: GET_PAGE_TASKS,
     pageTasks: tasks.data.message.tasks
+  });
+};
+
+export const setPage = (page: number) => (dispatch: any) => {
+  dispatch({
+    type: SET_PAGE,
+    page
   });
 };
