@@ -5,7 +5,7 @@ import { ITask } from "../actions/interface";
 
 interface IAction {
   type: "GET_PAGE_TASKS" | "GET_TASKS_COUNT";
-  tasksCount?: number;
+  tasksCount?: string;
   pageTasks?: ITask[];
 }
 
@@ -24,7 +24,7 @@ export default (state = initialState, action: IAction) => {
     case GET_TASKS_COUNT: {
       return {
         ...state,
-        tasksCount: action.tasksCount
+        tasksCount: action.tasksCount ? parseInt(action.tasksCount, 10) : 0
       };
     }
     case GET_PAGE_TASKS:

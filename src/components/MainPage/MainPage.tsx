@@ -5,6 +5,9 @@ import { getPageTasks, getTasksCount } from "../../actions/mainPageActions";
 // interface
 import { ITask } from "../../actions/interface";
 
+// components
+import PageControll from "../PageControll/PageControll";
+
 interface IProps {
   tasksCount: number;
   allTasks: any;
@@ -48,7 +51,13 @@ class MainPage extends React.Component<IProps> {
           </tbody>
         </table>
 
-        <span>{tasksCount}</span>
+        {tasksCount > 0 ? (
+          <PageControll
+            itemsCount={tasksCount}
+            pageItemsCount={3}
+            defaultPage={1}
+          />
+        ) : null}
       </section>
     );
   }
