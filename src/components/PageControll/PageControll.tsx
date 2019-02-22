@@ -56,8 +56,12 @@ class PageControll extends React.Component<IProps> {
     return pageItems;
   };
 
+  // on button click
   private buttonClick = (page: number) => {
+    // set page
     this.props.nextPage(page);
+
+    // set active page
     this.setState({ activePage: page });
   };
 }
