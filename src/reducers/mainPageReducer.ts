@@ -7,7 +7,7 @@ interface IAction {
   type: "GET_PAGE_TASKS" | "GET_TASKS_COUNT" | "SET_PAGE";
   tasksCount?: string;
   pageTasks?: ITask[];
-  page: number;
+  page?: number;
 }
 
 interface IState {
