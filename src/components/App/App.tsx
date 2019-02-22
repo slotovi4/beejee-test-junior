@@ -6,11 +6,11 @@ import { Provider } from "react-redux";
 import store from "../../store";
 
 // Components
-import First from "../First/First";
+import MainPage from "../MainPage/MainPage";
 
 const MainRoutes = () => (
   <React.Fragment>
-    <First />
+    <MainPage />
   </React.Fragment>
 );
 
