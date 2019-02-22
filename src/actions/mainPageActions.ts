@@ -1,6 +1,15 @@
-import { GET_PAGE_TASKS } from "./types";
+import { GET_PAGE_TASKS, GET_TASKS_COUNT } from "./types";
 import axios from "axios";
 import { URL, DEV } from "../api/uxcandy";
+
+export const getTasksCount = () => async (dispatch: any) => {
+  const count = await axios.get(`${URL}?developer=${DEV}`);
+
+  dispatch({
+    type: GET_TASKS_COUNT,
+    tasksCount: count.data.message.total_task_count
+  });
+};
 
 export const getPageTasks = (page: number) => async (dispatch: any) => {
   const tasks = await axios.get(`${URL}?developer=${DEV}&page=${page}`);

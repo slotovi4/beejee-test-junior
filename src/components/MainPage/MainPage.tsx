@@ -1,12 +1,14 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { getPageTasks } from "../../actions/mainPageActions";
+import { getPageTasks, getTasksCount } from "../../actions/mainPageActions";
 
 // interface
 import { ITask } from "../../actions/interface";
 
 interface IProps {
+  tasksCount: number;
   allTasks: any;
+  getTasksCount: () => void;
   getPageTasks: (page: number) => void;
 }
 
@@ -16,11 +18,12 @@ class MainPage extends React.Component<IProps> {
   };
 
   public async componentWillMount() {
+    await this.props.getTasksCount();
     await this.props.getPageTasks(1);
   }
 
   public render() {
-    const { allTasks } = this.props;
+    const { allTasks, tasksCount } = this.props;
     const { page } = this.state;
 
     return (
@@ -44,16 +47,19 @@ class MainPage extends React.Component<IProps> {
               ))}
           </tbody>
         </table>
+
+        <span>{tasksCount}</span>
       </section>
     );
   }
 }
 
 const mapStateToProps = (state: any) => ({
-  allTasks: state.mainPage.allTasks
+  allTasks: state.mainPage.allTasks,
+  tasksCount: state.mainPage.tasksCount
 });
 
 export default connect(
   mapStateToProps,
-  { getPageTasks }
+  { getPageTasks, getTasksCount }
 )(MainPage);
