@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import {
   getPageTasks,
   getTasksCount,
-  setPage
+  setPage,
+  setSortField
 } from "../../actions/mainPageActions";
 import { cn } from "@bem-react/classname";
 
@@ -23,6 +24,7 @@ interface IProps {
   getTasksCount: () => void;
   getPageTasks: (page: number) => void;
   setPage: (page: number) => void;
+  setSortField: (field: "id" | "username" | "email" | "status") => void;
 }
 
 class MainPage extends React.Component<IProps> {
@@ -68,7 +70,7 @@ class MainPage extends React.Component<IProps> {
   }
 
   public render() {
-    const { tasksCount } = this.props;
+    const { tasksCount, page } = this.props;
     const { load, pageTasks } = this.state;
     const main = cn("MainPage");
 
@@ -81,9 +83,10 @@ class MainPage extends React.Component<IProps> {
             <table className="table">
               <thead>
                 <tr>
-                  <th>Name</th>
+                  <th onClick={() => this.sortByName("username")}>Name</th>
                   <th>Email</th>
                   <th>Text</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -93,6 +96,7 @@ class MainPage extends React.Component<IProps> {
                       <td>{task.username}</td>
                       <td>{task.email}</td>
                       <td>{task.text}</td>
+                      <td>{task.status}</td>
                     </tr>
                   ))}
               </tbody>
@@ -106,12 +110,14 @@ class MainPage extends React.Component<IProps> {
             pageItemsCount={3}
             defaultPage={1}
             nextPage={this.props.setPage}
+            currentPage={page}
           />
         ) : null}
       </section>
     );
   }
 
+  // get current tasks
   private getCurrentTasks = (page: number) => {
     const { allTasks } = this.props;
     const length = allTasks.length;
@@ -130,6 +136,26 @@ class MainPage extends React.Component<IProps> {
     // set loaded pages
     this.setState({ loadPages });
   };
+
+  // sort all tasks
+  private sortByName = async (
+    field: "id" | "username" | "email" | "status"
+  ) => {
+    const { page } = this.props;
+
+    if (field === "username") {
+      this.props.setSortField("username");
+      // await this.props.sortTasksByName(page);
+      // делать запрос на получения фиелда с новым конфигом
+      // ксли новый конфиг то делать ресет
+    }
+
+    // reset state
+    this.setState({
+      loadPages: [page],
+      pageTasks: this.props.allTasks[0].tasks
+    });
+  };
 }
 
 const mapStateToProps = (state: any) => ({
@@ -140,5 +166,5 @@ const mapStateToProps = (state: any) => ({
 
 export default connect(
   mapStateToProps,
-  { getPageTasks, getTasksCount, setPage }
+  { getPageTasks, getTasksCount, setPage, setSortField }
 )(MainPage);

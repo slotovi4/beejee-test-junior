@@ -4,6 +4,7 @@ interface IProps {
   itemsCount: number;
   defaultPage: number;
   pageItemsCount: number;
+  currentPage: number;
   nextPage: (page: number) => void;
 }
 
@@ -58,11 +59,15 @@ class PageControll extends React.Component<IProps> {
 
   // on button click
   private buttonClick = (page: number) => {
-    // set page
-    this.props.nextPage(page);
+    const { currentPage } = this.props;
 
-    // set active page
-    this.setState({ activePage: page });
+    if (currentPage !== page) {
+      // set page
+      this.props.nextPage(page);
+
+      // set active page
+      this.setState({ activePage: page });
+    }
   };
 }
 

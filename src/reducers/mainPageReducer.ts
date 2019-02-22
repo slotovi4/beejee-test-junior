@@ -1,25 +1,36 @@
-import { GET_PAGE_TASKS, GET_TASKS_COUNT, SET_PAGE } from "../actions/types";
+import {
+  GET_PAGE_TASKS,
+  GET_TASKS_COUNT,
+  SET_PAGE,
+  SET_SORT_FILED
+} from "../actions/types";
 
 // interface
-import { IPageTasks, ITask } from "../actions/interface";
+import { IPageTasks, ISortConfig } from "../actions/interface";
 
 interface IAction {
-  type: "GET_PAGE_TASKS" | "GET_TASKS_COUNT" | "SET_PAGE";
+  type: "GET_PAGE_TASKS" | "GET_TASKS_COUNT" | "SET_PAGE" | "SET_SORT_FILED";
   tasksCount?: string;
   pageTasks?: IPageTasks;
+  sortedByName?: IPageTasks;
   page?: number;
+  field?: string;
 }
 
 interface IState {
   tasksCount: number;
-  allTasks: ITask[];
+  allTasks: IPageTasks[];
   page: number;
+  sortConfig: ISortConfig;
 }
 
 const initialState: IState = {
   tasksCount: 0,
   allTasks: [],
-  page: 1
+  page: 1,
+  sortConfig: {
+    field: "id"
+  }
 };
 
 export default (state = initialState, action: IAction) => {
@@ -41,6 +52,11 @@ export default (state = initialState, action: IAction) => {
       return {
         ...state,
         page: action.page
+      };
+    case SET_SORT_FILED:
+      return {
+        ...state,
+        sortConfig: { field: action.field }
       };
     default:
       return state;

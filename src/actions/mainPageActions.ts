@@ -1,4 +1,9 @@
-import { GET_PAGE_TASKS, GET_TASKS_COUNT, SET_PAGE } from "./types";
+import {
+  GET_PAGE_TASKS,
+  GET_TASKS_COUNT,
+  SET_PAGE,
+  SET_SORT_FILED
+} from "./types";
 import axios from "axios";
 import { URL, DEV } from "../api/uxcandy";
 
@@ -29,5 +34,14 @@ export const setPage = (page: number) => (dispatch: any) => {
   dispatch({
     type: SET_PAGE,
     page
+  });
+};
+
+// `${URL}?developer=${DEV}&sort_field=username&sort_direction=desc&page=${page}`
+
+export const setSortField = (field: string) => (dispanch: any) => {
+  dispanch({
+    type: SET_SORT_FILED,
+    field
   });
 };

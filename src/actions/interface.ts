@@ -10,3 +10,7 @@ export interface IPageTasks {
   page: number;
   tasks: ITask[];
 }
+
+export interface ISortConfig {
+  field: "id" | "username" | "email" | "status";
+}
