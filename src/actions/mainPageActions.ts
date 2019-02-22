@@ -14,9 +14,14 @@ export const getTasksCount = () => async (dispatch: any) => {
 export const getPageTasks = (page: number) => async (dispatch: any) => {
   const tasks = await axios.get(`${URL}?developer=${DEV}&page=${page}`);
 
+  const pageTasks = {
+    page,
+    tasks: tasks.data.message.tasks
+  };
+
   dispatch({
     type: GET_PAGE_TASKS,
-    pageTasks: tasks.data.message.tasks
+    pageTasks
   });
 };
 

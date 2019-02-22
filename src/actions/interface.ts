@@ -5,3 +5,8 @@ export interface ITask {
   text: string;
   status: number;
 }
+
+export interface IPageTasks {
+  page: number;
+  tasks: ITask[];
+}

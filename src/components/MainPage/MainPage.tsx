@@ -11,14 +11,14 @@ import { cn } from "@bem-react/classname";
 import "./MainPage.css";
 
 // interface
-import { ITask } from "../../actions/interface";
+import { ITask, IPageTasks } from "../../actions/interface";
 
 // components
 import PageControll from "../PageControll/PageControll";
 
 interface IProps {
   tasksCount: number;
-  allTasks: any;
+  allTasks: IPageTasks[];
   page: number;
   getTasksCount: () => void;
   getPageTasks: (page: number) => void;
@@ -27,13 +27,15 @@ interface IProps {
 
 class MainPage extends React.Component<IProps> {
   public state = {
-    load: false
+    load: false,
+    pageTasks: []
   };
 
   public async componentWillMount() {
     this.setState({ load: true });
     await this.props.getTasksCount();
     await this.props.getPageTasks(1);
+    this.getCurrentTasks();
     this.setState({ load: false });
   }
 
@@ -43,13 +45,14 @@ class MainPage extends React.Component<IProps> {
     if (page !== nextProps.page) {
       this.setState({ load: true });
       await this.props.getPageTasks(nextProps.page);
+      this.getCurrentTasks();
       this.setState({ load: false });
     }
   }
 
   public render() {
-    const { allTasks, tasksCount, page } = this.props;
-    const { load } = this.state;
+    const { tasksCount } = this.props;
+    const { load, pageTasks } = this.state;
     const main = cn("MainPage");
 
     return (
@@ -67,8 +70,8 @@ class MainPage extends React.Component<IProps> {
                 </tr>
               </thead>
               <tbody>
-                {allTasks[page - 1] &&
-                  allTasks[page - 1].map((task: ITask) => (
+                {pageTasks &&
+                  pageTasks.map((task: ITask) => (
                     <tr key={task.id}>
                       <td>{task.username}</td>
                       <td>{task.email}</td>
@@ -91,6 +94,18 @@ class MainPage extends React.Component<IProps> {
       </section>
     );
   }
+
+  private getCurrentTasks = () => {
+    const { allTasks, page } = this.props;
+    const length = allTasks.length;
+
+    for (let i = 0; i < length; i++) {
+      if (allTasks[i].page === page) {
+        this.setState({ pageTasks: allTasks[i].tasks });
+        break;
+      }
+    }
+  };
 }
 
 const mapStateToProps = (state: any) => ({

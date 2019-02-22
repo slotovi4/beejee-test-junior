@@ -1,12 +1,12 @@
 import { GET_PAGE_TASKS, GET_TASKS_COUNT, SET_PAGE } from "../actions/types";
 
 // interface
-import { ITask } from "../actions/interface";
+import { IPageTasks, ITask } from "../actions/interface";
 
 interface IAction {
   type: "GET_PAGE_TASKS" | "GET_TASKS_COUNT" | "SET_PAGE";
   tasksCount?: string;
-  pageTasks?: ITask[];
+  pageTasks?: IPageTasks;
   page?: number;
 }
 
@@ -33,7 +33,9 @@ export default (state = initialState, action: IAction) => {
     case GET_PAGE_TASKS:
       return {
         ...state,
-        allTasks: [...state.allTasks, action.pageTasks]
+        allTasks: action.pageTasks
+          ? [...state.allTasks, action.pageTasks]
+          : [...state.allTasks]
       };
     case SET_PAGE:
       return {
