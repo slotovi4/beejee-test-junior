@@ -18,12 +18,13 @@ interface IProps {
 class Header extends React.Component<IProps> {
   public state = {
     login: "",
-    password: ""
+    password: "",
+    message: ""
   };
 
   public render() {
     const header = cn("Header");
-    const { login, password } = this.state;
+    const { login, password, message } = this.state;
     const { admin } = this.props;
 
     return (
@@ -31,27 +32,30 @@ class Header extends React.Component<IProps> {
         {admin ? (
           <button onClick={this.props.exitUser}>Выйти</button>
         ) : (
-          <form onSubmit={this.onSubmit}>
-            <input
-              type="text"
-              required={true}
-              placeholder="login"
-              name="login"
-              onChange={this.changeInput}
-              value={login}
-            />
-            <input
-              type="password"
-              required={true}
-              placeholder="password"
-              name="password"
-              onChange={this.changeInput}
-              value={password}
-            />
-            <button className="btn btn-primary" type="submit">
-              Войти
-            </button>
-          </form>
+          <React.Fragment>
+            <span>{message}</span>
+            <form onSubmit={this.onSubmit}>
+              <input
+                type="text"
+                required={true}
+                placeholder="login"
+                name="login"
+                onChange={this.changeInput}
+                value={login}
+              />
+              <input
+                type="password"
+                required={true}
+                placeholder="password"
+                name="password"
+                onChange={this.changeInput}
+                value={password}
+              />
+              <button className="btn btn-primary" type="submit">
+                Войти
+              </button>
+            </form>
+          </React.Fragment>
         )}
       </section>
     );
@@ -71,7 +75,8 @@ class Header extends React.Component<IProps> {
 
     this.props.loginUser({ login, password });
 
-    console.log(1);
+    const { admin } = this.props;
+    this.setState({ message: admin ? "" : "неверный пользователь" });
   };
 }
 
