@@ -78,6 +78,8 @@ export const resetStoreTasks = () => (dispatch: any) => {
 export const changeTaskText = (id: number, text: string) => async (
   dispatch: any
 ) => {
+  let change = false;
+
   if (text !== "" && text) {
     const paramsString = fixedEncodeURIComponent(`text=${text}&token=beejee`);
     const signature = md5(paramsString);
@@ -91,19 +93,24 @@ export const changeTaskText = (id: number, text: string) => async (
     form.append("params_string", paramsString);
     form.append("signature", signature);
 
-    const count = await axios.post(`${URL}edit/${id}?developer=${DEV}`, form);
+    const result = await axios.post(`${URL}edit/${id}?developer=${DEV}`, form);
 
-    console.log(count.data);
+    console.log(result.data);
+
+    result.data.message.status === "ok" ? (change = true) : (change = false);
   }
 
   dispatch({
-    type: CHANGE_TASK_TEXT
+    type: CHANGE_TASK_TEXT,
+    change
   });
 };
 
 export const changeTaskStatus = (id: number, status: number) => async (
   dispatch: any
 ) => {
+  let change = false;
+
   if (status) {
     const paramsString = fixedEncodeURIComponent(
       `status=${status}&token=beejee`
@@ -119,13 +126,16 @@ export const changeTaskStatus = (id: number, status: number) => async (
     form.append("params_string", paramsString);
     form.append("signature", signature);
 
-    const count = await axios.post(`${URL}edit/${id}?developer=${DEV}`, form);
+    const result = await axios.post(`${URL}edit/${id}?developer=${DEV}`, form);
 
-    console.log(count.data);
+    console.log(result.data);
+
+    result.data.message.status === "ok" ? (change = true) : (change = false);
   }
 
   dispatch({
-    type: CHANGE_TASK_STATUS
+    type: CHANGE_TASK_STATUS,
+    change
   });
 };
 

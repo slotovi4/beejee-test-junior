@@ -4,7 +4,9 @@ import {
   SET_PAGE,
   SET_SORT_FILED,
   SET_SORT_DIRECTION,
-  RESET_STORE_TASKS
+  RESET_STORE_TASKS,
+  CHANGE_TASK_TEXT,
+  CHANGE_TASK_STATUS
 } from "../actions/types";
 
 // interface
@@ -17,13 +19,16 @@ interface IAction {
     | "SET_PAGE"
     | "SET_SORT_FILED"
     | "SET_SORT_DIRECTION"
-    | "RESET_STORE_TASKS";
+    | "RESET_STORE_TASKS"
+    | "CHANGE_TASK_TEXT"
+    | "CHANGE_TASK_STATUS";
   tasksCount?: string;
   pageTasks?: IPageTasks;
   sortedByName?: IPageTasks;
   page?: number;
   field?: string;
   direction?: string;
+  change?: boolean;
 }
 
 interface IState {
@@ -31,6 +36,7 @@ interface IState {
   allTasks: IPageTasks[];
   page: number;
   sortConfig: ISortConfig;
+  change: boolean;
 }
 
 const initialState: IState = {
@@ -40,7 +46,8 @@ const initialState: IState = {
   sortConfig: {
     field: "id",
     direction: "asc"
-  }
+  },
+  change: false
 };
 
 export default (state = initialState, action: IAction) => {
@@ -83,6 +90,16 @@ export default (state = initialState, action: IAction) => {
       return {
         ...state,
         allTasks: []
+      };
+    case CHANGE_TASK_TEXT:
+      return {
+        ...state,
+        change: action.change
+      };
+    case CHANGE_TASK_STATUS:
+      return {
+        ...state,
+        change: action.change
       };
     default:
       return state;
