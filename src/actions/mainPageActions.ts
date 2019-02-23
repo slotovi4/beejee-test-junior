@@ -48,8 +48,6 @@ export const setPage = (page: number) => (dispatch: any) => {
   });
 };
 
-// `${URL}?developer=${DEV}&sort_field=username&sort_direction=desc&page=${page}`
-
 export const setSortField = (field: "id" | "username" | "email" | "status") => (
   dispanch: any
 ) => {

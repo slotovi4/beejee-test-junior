@@ -18,6 +18,7 @@ import { ITask, IPageTasks, ISortConfig } from "../../actions/interface";
 
 // components
 import PageControll from "../PageControll/PageControll";
+import CreateTaskForm from "../CreateTaskForm/CreateTaskForm";
 
 interface IProps {
   tasksCount: number;
@@ -173,6 +174,8 @@ class MainPage extends React.Component<IProps> {
             currentPage={page}
           />
         ) : null}
+
+        <CreateTaskForm />
       </section>
     );
   }
