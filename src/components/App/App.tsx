@@ -7,9 +7,11 @@ import store from "../../store";
 
 // Components
 import MainPage from "../MainPage/MainPage";
+import Header from "../Header/Header";
 
 const MainRoutes = () => (
   <React.Fragment>
+    <Header />
     <MainPage />
   </React.Fragment>
 );
