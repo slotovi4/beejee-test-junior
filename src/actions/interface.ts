@@ -6,6 +6,12 @@ export interface ITask {
   status: number;
 }
 
+export interface ICreatedTask {
+  username: string;
+  email: string;
+  text: string;
+}
+
 export interface IPageTasks {
   page: number;
   tasks: ITask[];

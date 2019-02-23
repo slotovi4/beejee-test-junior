@@ -1,12 +1,25 @@
 import * as React from "react";
 import { cn } from "@bem-react/classname";
+import { connect } from "react-redux";
+import { createTask } from "../../actions/createTaskFormActions";
 
 // style
 import "./CreateTaskForm.css";
 
-class CreateTaskForm extends React.Component {
+interface IProps {
+  createTask: (task: FormData) => void;
+}
+
+class CreateTaskForm extends React.Component<IProps> {
+  public state = {
+    username: "",
+    email: "",
+    text: ""
+  };
+
   public render() {
     const form = cn("CreateTaskForm");
+    const { username, email, text } = this.state;
 
     return (
       <div className={form()}>
@@ -16,8 +29,11 @@ class CreateTaskForm extends React.Component {
               className="form-control"
               type="text"
               placeholder="username"
+              name="username"
               required={true}
               pattern="[a-zA-Z]{1,}"
+              onChange={this.changeInput}
+              value={username}
             />
           </div>
 
@@ -26,7 +42,11 @@ class CreateTaskForm extends React.Component {
               className="form-control"
               type="email"
               placeholder="email"
+              name="email"
               required={true}
+              onChange={this.changeInput}
+              value={email}
+              pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"
             />
           </div>
 
@@ -35,7 +55,10 @@ class CreateTaskForm extends React.Component {
               className="form-control"
               type="text"
               placeholder="text"
+              name="text"
               required={true}
+              onChange={this.changeInput}
+              value={text}
             />
           </div>
 
@@ -47,11 +70,28 @@ class CreateTaskForm extends React.Component {
     );
   }
 
+  private changeInput = (e: any) => {
+    const value = e.target.value;
+    const name = e.target.name;
+
+    this.setState({ [name]: value });
+  };
+
   private onSubmit = (e: any) => {
     e.preventDefault();
 
-    console.log(1);
+    const { username, email, text } = this.state;
+
+    const form = new FormData();
+    form.append("username", username);
+    form.append("email", email);
+    form.append("text", text);
+
+    this.props.createTask(form);
   };
 }
 
-export default CreateTaskForm;
+export default connect(
+  null,
+  { createTask }
+)(CreateTaskForm);
