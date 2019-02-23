@@ -19,10 +19,7 @@ const initialState: IState = {
 export default (state = initialState, action: IAction) => {
   switch (action.type) {
     case CREATE_TASK:
-      return {
-        ...state,
-        newTasks: [...state.newTasks, action.newTask]
-      };
+      return state;
     default:
       return state;
   }

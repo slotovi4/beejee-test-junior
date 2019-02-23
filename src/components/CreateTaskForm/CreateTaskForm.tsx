@@ -7,8 +7,8 @@ import { createTask } from "../../actions/createTaskFormActions";
 import "./CreateTaskForm.css";
 
 interface IProps {
-  createTask: (task: FormData) => void;
   history: any;
+  createTask: (task: FormData) => void;
 }
 
 class CreateTaskForm extends React.Component<IProps> {
@@ -78,7 +78,7 @@ class CreateTaskForm extends React.Component<IProps> {
     this.setState({ [name]: value });
   };
 
-  private onSubmit = (e: any) => {
+  private onSubmit = async (e: any) => {
     e.preventDefault();
 
     const { username, email, text } = this.state;
@@ -88,7 +88,7 @@ class CreateTaskForm extends React.Component<IProps> {
     form.append("email", email);
     form.append("text", text);
 
-    this.props.createTask(form);
+    await this.props.createTask(form);
 
     this.props.history.push("/");
   };
