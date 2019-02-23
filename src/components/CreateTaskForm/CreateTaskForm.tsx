@@ -8,6 +8,7 @@ import "./CreateTaskForm.css";
 
 interface IProps {
   createTask: (task: FormData) => void;
+  history: any;
 }
 
 class CreateTaskForm extends React.Component<IProps> {
@@ -88,6 +89,8 @@ class CreateTaskForm extends React.Component<IProps> {
     form.append("text", text);
 
     this.props.createTask(form);
+
+    this.props.history.push("/");
   };
 }
 

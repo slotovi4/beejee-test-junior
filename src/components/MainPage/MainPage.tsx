@@ -10,6 +10,7 @@ import {
   changeTaskText,
   changeTaskStatus
 } from "../../actions/mainPageActions";
+import { Link } from "react-router-dom";
 import { cn } from "@bem-react/classname";
 
 // style
@@ -20,7 +21,6 @@ import { ITask, IPageTasks, ISortConfig } from "../../actions/interface";
 
 // components
 import PageControll from "../PageControll/PageControll";
-import CreateTaskForm from "../CreateTaskForm/CreateTaskForm";
 
 interface IProps {
   tasksCount: number;
@@ -311,7 +311,9 @@ class MainPage extends React.Component<IProps> {
           />
         ) : null}
 
-        <CreateTaskForm />
+        <Link to="/add" className="btn btn-primary">
+          Создать задачу
+        </Link>
       </section>
     );
   }

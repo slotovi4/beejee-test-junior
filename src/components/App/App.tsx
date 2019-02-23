@@ -8,6 +8,7 @@ import store from "../../store";
 // Components
 import MainPage from "../MainPage/MainPage";
 import Header from "../Header/Header";
+import CreateTaskForm from "../CreateTaskForm/CreateTaskForm";
 
 const MainRoutes = () => (
   <React.Fragment>
@@ -23,6 +24,7 @@ class App extends React.Component {
         <Router>
           <Switch>
             <Route exact={true} path="/" component={MainRoutes} />
+            <Route exact={true} path="/add" component={CreateTaskForm} />
           </Switch>
         </Router>
       </Provider>

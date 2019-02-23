@@ -10,7 +10,7 @@ interface IState {
 }
 
 const initialState: IState = {
-  admin: true
+  admin: false
 };
 
 export default (state = initialState, action: IAction) => {
