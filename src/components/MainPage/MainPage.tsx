@@ -41,7 +41,6 @@ interface IProps {
 class MainPage extends React.Component<IProps> {
   public state = {
     load: false,
-    loadPages: [],
     pageTasks: [],
     nameClick: false,
     emailClick: false,
@@ -68,17 +67,13 @@ class MainPage extends React.Component<IProps> {
 
   public async componentWillReceiveProps(nextProps: IProps) {
     const { page, sortConfig } = this.props;
-    const loadPages: number[] = this.state.loadPages;
 
     // if change page
     if (page !== nextProps.page) {
-      // if not loaded page
-      if (loadPages.indexOf(nextProps.page) === -1) {
-        // get page tasks
-        this.setState({ load: true });
-        await this.props.getPageTasks(nextProps.page, nextProps.sortConfig);
-        this.setState({ load: false });
-      }
+      // get page tasks
+      this.setState({ load: true });
+      await this.props.getPageTasks(nextProps.page, nextProps.sortConfig);
+      this.setState({ load: false });
 
       // get current page tasks
       this.getCurrentTasks(nextProps.page);
@@ -97,7 +92,7 @@ class MainPage extends React.Component<IProps> {
       // get page tasks
       this.setState({ load: true });
       await this.props.getPageTasks(1, nextProps.sortConfig);
-      this.setState({ load: false, loadPages: [1] });
+      this.setState({ load: false });
 
       // get current page tasks
       this.getCurrentTasks(1);
@@ -334,20 +329,13 @@ class MainPage extends React.Component<IProps> {
   private getCurrentTasks = (page: number) => {
     const { allTasks } = this.props;
     const length = allTasks.length;
-    const loadPages = [];
 
     for (let i = 0; i < length; i++) {
       // set page tasks
       if (allTasks[i].page === page) {
         this.setState({ pageTasks: allTasks[i].tasks });
       }
-
-      // put loaded pages
-      loadPages.push(allTasks[i].page);
     }
-
-    // set loaded pages
-    this.setState({ loadPages });
   };
 
   // sort all tasks

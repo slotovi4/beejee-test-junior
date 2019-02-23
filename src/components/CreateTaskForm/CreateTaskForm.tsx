@@ -2,6 +2,7 @@ import * as React from "react";
 import { cn } from "@bem-react/classname";
 import { connect } from "react-redux";
 import { createTask } from "../../actions/createTaskFormActions";
+import { setPage } from "../../actions/mainPageActions";
 
 // style
 import "./CreateTaskForm.css";
@@ -9,6 +10,7 @@ import "./CreateTaskForm.css";
 interface IProps {
   history: any;
   createTask: (task: FormData) => void;
+  setPage: (page: number) => void;
 }
 
 class CreateTaskForm extends React.Component<IProps> {
@@ -90,11 +92,13 @@ class CreateTaskForm extends React.Component<IProps> {
 
     await this.props.createTask(form);
 
+    this.props.setPage(1);
+
     this.props.history.push("/");
   };
 }
 
 export default connect(
   null,
-  { createTask }
+  { createTask, setPage }
 )(CreateTaskForm);
