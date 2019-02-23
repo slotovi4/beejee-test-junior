@@ -114,9 +114,7 @@ class MainPage extends React.Component<IProps> {
       statusClick,
       changedTaskId,
       changeText,
-      changeStatus,
-      changedText,
-      changedStatus
+      changeStatus
     } = this.state;
     const main = cn("MainPage");
 
@@ -199,17 +197,7 @@ class MainPage extends React.Component<IProps> {
                                   />
                                   <button
                                     className="btn btn-sm btn-default"
-                                    onClick={() => {
-                                      this.props.changeTaskText(
-                                        task.id,
-                                        changedText
-                                      );
-                                      this.setState({
-                                        changedTaskId: null,
-                                        changedText: "",
-                                        changeText: false
-                                      });
-                                    }}
+                                    onClick={() => this.changeText(task.id)}
                                   >
                                     Применить
                                   </button>
@@ -256,17 +244,7 @@ class MainPage extends React.Component<IProps> {
                                   />
                                   <button
                                     className="btn btn-sm btn-default"
-                                    onClick={() => {
-                                      this.props.changeTaskStatus(
-                                        task.id,
-                                        parseInt(changedStatus, 10)
-                                      );
-                                      this.setState({
-                                        changedTaskId: null,
-                                        changedStatus: "",
-                                        changeStatus: false
-                                      });
-                                    }}
+                                    onClick={() => this.changeStatus(task.id)}
                                   >
                                     Применить
                                   </button>
@@ -308,6 +286,7 @@ class MainPage extends React.Component<IProps> {
             defaultPage={1}
             nextPage={this.props.setPage}
             currentPage={page}
+            disabled={changedTaskId ? true : false}
           />
         ) : null}
 
@@ -317,6 +296,39 @@ class MainPage extends React.Component<IProps> {
       </section>
     );
   }
+
+  // on change text
+  private changeText = async (id: number) => {
+    const { changedText } = this.state;
+    const { page, sortConfig } = this.props;
+
+    this.props.changeTaskText(id, changedText);
+    this.setState({
+      changedTaskId: null,
+      changedText: "",
+      changeText: false
+    });
+    this.setState({ load: true });
+    await this.props.getPageTasks(page, sortConfig);
+    this.setState({ load: false });
+  };
+
+  // on change status
+  private changeStatus = async (id: number) => {
+    const { changedStatus } = this.state;
+    const { page, sortConfig } = this.props;
+
+    this.props.changeTaskStatus(id, parseInt(changedStatus, 10));
+    this.setState({
+      changedTaskId: null,
+      changedStatus: "",
+      changeStatus: false
+    });
+
+    this.setState({ load: true });
+    await this.props.getPageTasks(page, sortConfig);
+    this.setState({ load: false });
+  };
 
   // get current tasks
   private getCurrentTasks = (page: number) => {

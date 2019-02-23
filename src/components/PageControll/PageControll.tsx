@@ -5,6 +5,7 @@ interface IProps {
   defaultPage: number;
   pageItemsCount: number;
   currentPage: number;
+  disabled: boolean;
   nextPage: (page: number) => void;
 }
 
@@ -47,6 +48,7 @@ class PageControll extends React.Component<IProps> {
   // create pages count
   private createPageItems = (pagesCount: number) => {
     const { activePage } = this.state;
+    const { disabled } = this.props;
     const pageItems = [];
 
     for (let i = 1; i <= pagesCount; i++) {
@@ -55,7 +57,11 @@ class PageControll extends React.Component<IProps> {
           className={activePage === i ? "page-item active" : "page-item"}
           key={"page-item-" + i}
         >
-          <a className="page-link" href="#" onClick={() => this.buttonClick(i)}>
+          <a
+            className="page-link"
+            href="#"
+            onClick={e => (disabled ? e.preventDefault() : this.buttonClick(i))}
+          >
             {i}
           </a>
         </li>
