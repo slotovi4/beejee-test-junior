@@ -1,3 +1,26 @@
 .MainPage-Content {
   height: 200px;
 }
+
+.MainPage-Sort {
+  position: relative;
+  cursor: pointer;
+}
+
+.MainPage-Sort:after {
+  content: "";
+  position: absolute;
+  border: 5px solid black;
+  border-bottom-color: transparent;
+  border-right-color: transparent;
+  border-left-color: transparent;
+  transition: all 0.3s ease-out;
+  top: 50%;
+  margin-top: -2.5px;
+  margin-left: 5px;
+}
+
+.MainPage-Sort_active::after {
+  transform: rotate(180deg);
+  margin-top: -5px;
+}

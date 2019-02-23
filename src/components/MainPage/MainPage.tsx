@@ -36,7 +36,10 @@ class MainPage extends React.Component<IProps> {
   public state = {
     load: false,
     loadPages: [],
-    pageTasks: []
+    pageTasks: [],
+    nameClick: false,
+    emailClick: false,
+    statusClick: false
   };
 
   public async componentWillMount() {
@@ -56,6 +59,7 @@ class MainPage extends React.Component<IProps> {
     const { page, sortConfig } = this.props;
     const loadPages: number[] = this.state.loadPages;
 
+    // if change page
     if (page !== nextProps.page) {
       // if not loaded page
       if (loadPages.indexOf(nextProps.page) === -1) {
@@ -91,7 +95,7 @@ class MainPage extends React.Component<IProps> {
 
   public render() {
     const { tasksCount, page } = this.props;
-    const { load, pageTasks } = this.state;
+    const { load, pageTasks, nameClick, emailClick, statusClick } = this.state;
     const main = cn("MainPage");
 
     return (
@@ -103,10 +107,46 @@ class MainPage extends React.Component<IProps> {
             <table className="table">
               <thead>
                 <tr>
-                  <th onClick={() => this.sortByField("username")}>Name</th>
-                  <th>Email</th>
+                  <th
+                    className={main("Sort", { active: nameClick })}
+                    onClick={() => {
+                      this.sortByField("username");
+                      this.setState({
+                        nameClick: !nameClick,
+                        emailClick: false,
+                        statusClick: false
+                      });
+                    }}
+                  >
+                    Name
+                  </th>
+                  <th
+                    className={main("Sort", { active: emailClick })}
+                    onClick={() => {
+                      this.sortByField("email");
+                      this.setState({
+                        emailClick: !emailClick,
+                        nameClick: false,
+                        statusClick: false
+                      });
+                    }}
+                  >
+                    Email
+                  </th>
                   <th>Text</th>
-                  <th>Status</th>
+                  <th
+                    className={main("Sort", { active: statusClick })}
+                    onClick={() => {
+                      this.sortByField("status");
+                      this.setState({
+                        statusClick: !statusClick,
+                        nameClick: false,
+                        emailClick: false
+                      });
+                    }}
+                  >
+                    Status
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -169,15 +209,6 @@ class MainPage extends React.Component<IProps> {
       this.props.setSortDirection(newDirection);
     } else {
       this.props.setSortField(field);
-
-      // get page tasks
-      // await this.props.getPageTasks(page, );
-      // get current page tasks
-      // this.getCurrentTasks(page);
-
-      // await this.props.sortTasksByName(page);
-      // делать запрос на получения фиелда с новым конфигом
-      // ксли новый конфиг то делать ресет
     }
   };
 }

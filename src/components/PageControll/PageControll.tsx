@@ -22,7 +22,7 @@ class PageControll extends React.Component<IProps> {
     this.setState({ pagesCount, activePage: defaultPage });
   }
 
-  public componentWillReceiveProps(nextProps: any) {
+  public componentWillReceiveProps(nextProps: IProps) {
     const { activePage } = this.state;
 
     if (activePage !== nextProps.currentPage) {
