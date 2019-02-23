@@ -2,19 +2,28 @@ import {
   GET_PAGE_TASKS,
   GET_TASKS_COUNT,
   SET_PAGE,
-  SET_SORT_FILED
+  SET_SORT_FILED,
+  SET_SORT_DIRECTION,
+  RESET_STORE_TASKS
 } from "../actions/types";
 
 // interface
 import { IPageTasks, ISortConfig } from "../actions/interface";
 
 interface IAction {
-  type: "GET_PAGE_TASKS" | "GET_TASKS_COUNT" | "SET_PAGE" | "SET_SORT_FILED";
+  type:
+    | "GET_PAGE_TASKS"
+    | "GET_TASKS_COUNT"
+    | "SET_PAGE"
+    | "SET_SORT_FILED"
+    | "SET_SORT_DIRECTION"
+    | "RESET_STORE_TASKS";
   tasksCount?: string;
   pageTasks?: IPageTasks;
   sortedByName?: IPageTasks;
   page?: number;
   field?: string;
+  direction?: string;
 }
 
 interface IState {
@@ -29,7 +38,8 @@ const initialState: IState = {
   allTasks: [],
   page: 1,
   sortConfig: {
-    field: "id"
+    field: "id",
+    direction: "asc"
   }
 };
 
@@ -56,7 +66,23 @@ export default (state = initialState, action: IAction) => {
     case SET_SORT_FILED:
       return {
         ...state,
-        sortConfig: { field: action.field }
+        sortConfig: {
+          field: action.field,
+          direction: state.sortConfig.direction
+        }
+      };
+    case SET_SORT_DIRECTION:
+      return {
+        ...state,
+        sortConfig: {
+          direction: action.direction,
+          field: state.sortConfig.field
+        }
+      };
+    case RESET_STORE_TASKS:
+      return {
+        ...state,
+        allTasks: []
       };
     default:
       return state;

@@ -13,4 +13,5 @@ export interface IPageTasks {
 
 export interface ISortConfig {
   field: "id" | "username" | "email" | "status";
+  direction: "asc" | "desc";
 }
