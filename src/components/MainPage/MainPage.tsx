@@ -6,7 +6,8 @@ import {
   setPage,
   setSortField,
   setSortDirection,
-  resetStoreTasks
+  resetStoreTasks,
+  changeTaskText
 } from "../../actions/mainPageActions";
 import { cn } from "@bem-react/classname";
 
@@ -32,6 +33,7 @@ interface IProps {
   setSortField: (field: "id" | "username" | "email" | "status") => void;
   setSortDirection: (direction: "asc" | "desc") => void;
   resetStoreTasks: () => void;
+  changeTaskText: (id: number, text: string) => void;
 }
 
 class MainPage extends React.Component<IProps> {
@@ -41,7 +43,9 @@ class MainPage extends React.Component<IProps> {
     pageTasks: [],
     nameClick: false,
     emailClick: false,
-    statusClick: false
+    statusClick: false,
+    changedTaskId: null,
+    changedText: ""
   };
 
   public async componentWillMount() {
@@ -97,7 +101,15 @@ class MainPage extends React.Component<IProps> {
 
   public render() {
     const { tasksCount, page, admin } = this.props;
-    const { load, pageTasks, nameClick, emailClick, statusClick } = this.state;
+    const {
+      load,
+      pageTasks,
+      nameClick,
+      emailClick,
+      statusClick,
+      changedTaskId,
+      changedText
+    } = this.state;
     const main = cn("MainPage");
 
     return (
@@ -159,12 +171,53 @@ class MainPage extends React.Component<IProps> {
                       <td>{task.email}</td>
                       <td>
                         <div className={main("Change")}>
-                          {task.text}
                           {admin ? (
-                            <button className="btn btn-sm btn-default">
-                              Редактировать
-                            </button>
-                          ) : null}
+                            <React.Fragment>
+                              {changedTaskId === task.id ? (
+                                <React.Fragment>
+                                  <textarea
+                                    className={main("Textarea")}
+                                    defaultValue={task.text}
+                                    onChange={e =>
+                                      this.setState({
+                                        changedText: e.target.value
+                                      })
+                                    }
+                                  />
+                                  <button
+                                    className="btn btn-sm btn-default"
+                                    onClick={() => {
+                                      this.props.changeTaskText(
+                                        task.id,
+                                        changedText
+                                      );
+                                      this.setState({
+                                        changedTaskId: null,
+                                        changedText: ""
+                                      });
+                                    }}
+                                  >
+                                    Применить
+                                  </button>
+                                </React.Fragment>
+                              ) : (
+                                <React.Fragment>
+                                  <span>{task.text}</span>
+                                  <button
+                                    className="btn btn-sm btn-default"
+                                    onClick={() =>
+                                      this.setState({ changedTaskId: task.id })
+                                    }
+                                    disabled={changedTaskId ? true : false}
+                                  >
+                                    Редактировать
+                                  </button>
+                                </React.Fragment>
+                              )}
+                            </React.Fragment>
+                          ) : (
+                            <span>{task.text}</span>
+                          )}
                         </div>
                       </td>
                       <td>{task.status}</td>
@@ -242,6 +295,7 @@ export default connect(
     setPage,
     setSortField,
     setSortDirection,
-    resetStoreTasks
+    resetStoreTasks,
+    changeTaskText
   }
 )(MainPage);

@@ -7,3 +7,4 @@ export const RESET_STORE_TASKS = "RESET_STORE_TASKS";
 export const CREATE_TASK = "CREATE_TASK";
 export const LOGIN = "LOGIN";
 export const EXIT = "EXIT";
+export const CHANGE_TASK_TEXT = "CHANGE_TASK_TEXT";

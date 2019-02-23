@@ -4,9 +4,11 @@ import {
   SET_PAGE,
   SET_SORT_FILED,
   SET_SORT_DIRECTION,
-  RESET_STORE_TASKS
+  RESET_STORE_TASKS,
+  CHANGE_TASK_TEXT
 } from "./types";
 import axios from "axios";
+import * as md5 from "md5";
 import { URL, DEV } from "../api/uxcandy";
 
 // interface
@@ -69,5 +71,40 @@ export const setSortDirection = (direction: "asc" | "desc") => (
 export const resetStoreTasks = () => (dispatch: any) => {
   dispatch({
     type: RESET_STORE_TASKS
+  });
+};
+
+export const changeTaskText = (id: number, text: string) => async (
+  dispatch: any
+) => {
+  if (text !== "" && text) {
+    const paramsString = fixedEncodeURIComponent(
+      `status=0&text=SomeText&token=beejee`
+    );
+    const signature = md5(paramsString);
+
+    console.log(paramsString);
+    console.log(signature);
+
+    const form = new FormData();
+    form.append("status", "0");
+    form.append("text", "SomeText");
+    form.append("token", "beejee");
+    form.append("params_string", paramsString);
+    form.append("signature", signature);
+
+    const count = await axios.post(`${URL}edit/${id}?developer=${DEV}`, form);
+
+    console.log(count.data);
+  }
+
+  dispatch({
+    type: CHANGE_TASK_TEXT
+  });
+};
+
+const fixedEncodeURIComponent = (str: string) => {
+  return encodeURIComponent(str).replace(/[!'()*]/g, c => {
+    return "%" + c.charCodeAt(0).toString(16);
   });
 };
