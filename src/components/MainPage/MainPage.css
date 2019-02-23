@@ -1,5 +1,5 @@
 .MainPage-Content {
-  height: 200px;
+  height: 400px;
 }
 
 .MainPage-Sort {
@@ -23,4 +23,9 @@
 .MainPage-Sort_active::after {
   transform: rotate(180deg);
   margin-top: -5px;
+}
+
+.MainPage-Change {
+  display: flex;
+  align-items: center;
 }

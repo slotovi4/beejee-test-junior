@@ -25,6 +25,7 @@ interface IProps {
   allTasks: IPageTasks[];
   page: number;
   sortConfig: ISortConfig;
+  admin: boolean;
   getTasksCount: () => void;
   getPageTasks: (page: number, config: ISortConfig) => void;
   setPage: (page: number) => void;
@@ -95,7 +96,7 @@ class MainPage extends React.Component<IProps> {
   }
 
   public render() {
-    const { tasksCount, page } = this.props;
+    const { tasksCount, page, admin } = this.props;
     const { load, pageTasks, nameClick, emailClick, statusClick } = this.state;
     const main = cn("MainPage");
 
@@ -156,7 +157,16 @@ class MainPage extends React.Component<IProps> {
                     <tr key={task.id}>
                       <td>{task.username}</td>
                       <td>{task.email}</td>
-                      <td>{task.text}</td>
+                      <td>
+                        <div className={main("Change")}>
+                          {task.text}
+                          {admin ? (
+                            <button className="btn btn-sm btn-default">
+                              Редактировать
+                            </button>
+                          ) : null}
+                        </div>
+                      </td>
                       <td>{task.status}</td>
                     </tr>
                   ))}
@@ -220,7 +230,8 @@ const mapStateToProps = (state: any) => ({
   allTasks: state.mainPage.allTasks,
   tasksCount: state.mainPage.tasksCount,
   page: state.mainPage.page,
-  sortConfig: state.mainPage.sortConfig
+  sortConfig: state.mainPage.sortConfig,
+  admin: state.login.admin
 });
 
 export default connect(
