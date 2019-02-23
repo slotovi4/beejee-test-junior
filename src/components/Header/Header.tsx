@@ -30,7 +30,12 @@ class Header extends React.Component<IProps> {
     return (
       <section className={header() + " container"}>
         {admin ? (
-          <button onClick={this.props.exitUser}>Выйти</button>
+          <React.Fragment>
+            <h5>admin</h5>
+            <button className="btn btn-primary" onClick={this.props.exitUser}>
+              Выйти
+            </button>
+          </React.Fragment>
         ) : (
           <React.Fragment>
             <span>{message}</span>
@@ -70,9 +75,9 @@ class Header extends React.Component<IProps> {
 
   private onSubmit = (e: any) => {
     e.preventDefault();
-
     const { login, password } = this.state;
 
+    // login
     this.props.loginUser({ login, password });
 
     const { admin } = this.props;
