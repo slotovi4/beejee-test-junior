@@ -21,3 +21,8 @@ export interface ISortConfig {
   field: "id" | "username" | "email" | "status";
   direction: "asc" | "desc";
 }
+
+export interface IUser {
+  login: string;
+  password: string;
+}

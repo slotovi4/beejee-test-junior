@@ -1,31 +1,85 @@
 import * as React from "react";
 import { cn } from "@bem-react/classname";
+import { connect } from "react-redux";
+import { loginUser, exitUser } from "../../actions/headerActions";
 
 // styles
 import "./Header.css";
 
-class Header extends React.Component {
+// interface
+import { IUser } from "../../actions/interface";
+
+interface IProps {
+  admin: boolean;
+  loginUser: (user: IUser) => void;
+  exitUser: () => void;
+}
+
+class Header extends React.Component<IProps> {
+  public state = {
+    login: "",
+    password: ""
+  };
+
   public render() {
     const header = cn("Header");
+    const { login, password } = this.state;
+    const { admin } = this.props;
 
     return (
       <section className={header() + " container"}>
-        <form onSubmit={this.onSubmit}>
-          <input type="text" placeholder="login" />
-          <input type="password" placeholder="password" />
-          <button className="btn btn-primary" type="submit">
-            Войти
-          </button>
-        </form>
+        {admin ? (
+          <button onClick={this.props.exitUser}>Выйти</button>
+        ) : (
+          <form onSubmit={this.onSubmit}>
+            <input
+              type="text"
+              required={true}
+              placeholder="login"
+              name="login"
+              onChange={this.changeInput}
+              value={login}
+            />
+            <input
+              type="password"
+              required={true}
+              placeholder="password"
+              name="password"
+              onChange={this.changeInput}
+              value={password}
+            />
+            <button className="btn btn-primary" type="submit">
+              Войти
+            </button>
+          </form>
+        )}
       </section>
     );
   }
 
+  private changeInput = (e: any) => {
+    const value = e.target.value;
+    const name = e.target.name;
+
+    this.setState({ [name]: value });
+  };
+
   private onSubmit = (e: any) => {
     e.preventDefault();
+
+    const { login, password } = this.state;
+
+    this.props.loginUser({ login, password });
 
     console.log(1);
   };
 }
 
-export default Header;
+const mapStateToProps = (state: any) => ({
+  admin: state.login.admin
+});
+
+export default connect(
+  mapStateToProps,
+  { loginUser, exitUser }
+)(Header);

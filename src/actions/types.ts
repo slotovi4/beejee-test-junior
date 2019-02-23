@@ -5,3 +5,5 @@ export const SET_SORT_FILED = "SET_SORT_FILED";
 export const SET_SORT_DIRECTION = "SET_SORT_DIRECTION";
 export const RESET_STORE_TASKS = "RESET_STORE_TASKS";
 export const CREATE_TASK = "CREATE_TASK";
+export const LOGIN = "LOGIN";
+export const EXIT = "EXIT";
