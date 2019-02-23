@@ -7,7 +7,8 @@ import {
   setSortField,
   setSortDirection,
   resetStoreTasks,
-  changeTaskText
+  changeTaskText,
+  changeTaskStatus
 } from "../../actions/mainPageActions";
 import { cn } from "@bem-react/classname";
 
@@ -34,6 +35,7 @@ interface IProps {
   setSortDirection: (direction: "asc" | "desc") => void;
   resetStoreTasks: () => void;
   changeTaskText: (id: number, text: string) => void;
+  changeTaskStatus: (id: number, status: number) => void;
 }
 
 class MainPage extends React.Component<IProps> {
@@ -45,7 +47,10 @@ class MainPage extends React.Component<IProps> {
     emailClick: false,
     statusClick: false,
     changedTaskId: null,
-    changedText: ""
+    changeText: false,
+    changeStatus: false,
+    changedText: "",
+    changedStatus: ""
   };
 
   public async componentWillMount() {
@@ -108,7 +113,10 @@ class MainPage extends React.Component<IProps> {
       emailClick,
       statusClick,
       changedTaskId,
-      changedText
+      changeText,
+      changeStatus,
+      changedText,
+      changedStatus
     } = this.state;
     const main = cn("MainPage");
 
@@ -166,14 +174,19 @@ class MainPage extends React.Component<IProps> {
               <tbody>
                 {pageTasks &&
                   pageTasks.map((task: ITask) => (
-                    <tr key={task.id}>
-                      <td>{task.username}</td>
-                      <td>{task.email}</td>
-                      <td>
+                    <tr
+                      key={task.id}
+                      className={main("Tr", {
+                        ready: task.status === 10 ? true : false
+                      })}
+                    >
+                      <td className={main("Td")}>{task.username}</td>
+                      <td className={main("Td")}>{task.email}</td>
+                      <td className={main("Td")}>
                         <div className={main("Change")}>
                           {admin ? (
                             <React.Fragment>
-                              {changedTaskId === task.id ? (
+                              {changedTaskId === task.id && changeText ? (
                                 <React.Fragment>
                                   <textarea
                                     className={main("Textarea")}
@@ -193,7 +206,8 @@ class MainPage extends React.Component<IProps> {
                                       );
                                       this.setState({
                                         changedTaskId: null,
-                                        changedText: ""
+                                        changedText: "",
+                                        changeText: false
                                       });
                                     }}
                                   >
@@ -206,7 +220,10 @@ class MainPage extends React.Component<IProps> {
                                   <button
                                     className="btn btn-sm btn-default"
                                     onClick={() =>
-                                      this.setState({ changedTaskId: task.id })
+                                      this.setState({
+                                        changedTaskId: task.id,
+                                        changeText: true
+                                      })
                                     }
                                     disabled={changedTaskId ? true : false}
                                   >
@@ -220,7 +237,63 @@ class MainPage extends React.Component<IProps> {
                           )}
                         </div>
                       </td>
-                      <td>{task.status}</td>
+                      <td className={main("Td")}>
+                        <div className={main("Change")}>
+                          {admin ? (
+                            <React.Fragment>
+                              {changedTaskId === task.id && changeStatus ? (
+                                <React.Fragment>
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    max="10"
+                                    defaultValue={task.status.toString()}
+                                    onChange={e =>
+                                      this.setState({
+                                        changedStatus: e.target.value
+                                      })
+                                    }
+                                  />
+                                  <button
+                                    className="btn btn-sm btn-default"
+                                    onClick={() => {
+                                      this.props.changeTaskStatus(
+                                        task.id,
+                                        parseInt(changedStatus, 10)
+                                      );
+                                      this.setState({
+                                        changedTaskId: null,
+                                        changedStatus: "",
+                                        changeStatus: false
+                                      });
+                                    }}
+                                  >
+                                    Применить
+                                  </button>
+                                </React.Fragment>
+                              ) : (
+                                <React.Fragment>
+                                  <span>{task.status}</span>
+                                  <button
+                                    className="btn btn-sm btn-default"
+                                    onClick={() =>
+                                      this.setState({
+                                        changedTaskId: task.id,
+                                        changeStatus: true
+                                      })
+                                    }
+                                    disabled={changedTaskId ? true : false}
+                                  >
+                                    Редактировать
+                                  </button>
+                                </React.Fragment>
+                              )}
+                            </React.Fragment>
+                          ) : (
+                            <span>{task.status}</span>
+                          )}
+                        </div>
+                      </td>
                     </tr>
                   ))}
               </tbody>
@@ -296,6 +369,7 @@ export default connect(
     setSortField,
     setSortDirection,
     resetStoreTasks,
-    changeTaskText
+    changeTaskText,
+    changeTaskStatus
   }
 )(MainPage);

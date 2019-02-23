@@ -33,3 +33,14 @@
 .MainPage-Textarea {
   width: 100%;
 }
+
+.MainPage-Td {
+  vertical-align: middle !important;
+}
+
+.MainPage-Tr {
+}
+
+.MainPage-Tr_ready {
+  background-color: #aeffae;
+}

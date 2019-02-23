@@ -8,3 +8,4 @@ export const CREATE_TASK = "CREATE_TASK";
 export const LOGIN = "LOGIN";
 export const EXIT = "EXIT";
 export const CHANGE_TASK_TEXT = "CHANGE_TASK_TEXT";
+export const CHANGE_TASK_STATUS = "CHANGE_TASK_STATUS";

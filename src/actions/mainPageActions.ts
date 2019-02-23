@@ -5,7 +5,8 @@ import {
   SET_SORT_FILED,
   SET_SORT_DIRECTION,
   RESET_STORE_TASKS,
-  CHANGE_TASK_TEXT
+  CHANGE_TASK_TEXT,
+  CHANGE_TASK_STATUS
 } from "./types";
 import axios from "axios";
 import * as md5 from "md5";
@@ -78,17 +79,14 @@ export const changeTaskText = (id: number, text: string) => async (
   dispatch: any
 ) => {
   if (text !== "" && text) {
-    const paramsString = fixedEncodeURIComponent(
-      `status=0&text=SomeText&token=beejee`
-    );
+    const paramsString = fixedEncodeURIComponent(`text=${text}&token=beejee`);
     const signature = md5(paramsString);
 
     console.log(paramsString);
     console.log(signature);
 
     const form = new FormData();
-    form.append("status", "0");
-    form.append("text", "SomeText");
+    form.append("text", text);
     form.append("token", "beejee");
     form.append("params_string", paramsString);
     form.append("signature", signature);
@@ -100,6 +98,34 @@ export const changeTaskText = (id: number, text: string) => async (
 
   dispatch({
     type: CHANGE_TASK_TEXT
+  });
+};
+
+export const changeTaskStatus = (id: number, status: number) => async (
+  dispatch: any
+) => {
+  if (status) {
+    const paramsString = fixedEncodeURIComponent(
+      `status=${status}&token=beejee`
+    );
+    const signature = md5(paramsString);
+
+    console.log(paramsString);
+    console.log(signature);
+
+    const form = new FormData();
+    form.append("status", status.toString());
+    form.append("token", "beejee");
+    form.append("params_string", paramsString);
+    form.append("signature", signature);
+
+    const count = await axios.post(`${URL}edit/${id}?developer=${DEV}`, form);
+
+    console.log(count.data);
+  }
+
+  dispatch({
+    type: CHANGE_TASK_STATUS
   });
 };
 
